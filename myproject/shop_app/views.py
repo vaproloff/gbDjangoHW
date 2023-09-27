@@ -1,6 +1,6 @@
 import logging
 from django.http import HttpResponse
-from shop.models import Client, Product, Order
+from shop_app.models import Client, Product, Order
 
 logger = logging.getLogger(__name__)
 

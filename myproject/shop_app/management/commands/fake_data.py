@@ -1,7 +1,7 @@
 import random
 
 from django.core.management.base import BaseCommand
-from shop.models import Client, Product, Order
+from shop_app.models import Client, Product, Order
 
 
 class Command(BaseCommand):

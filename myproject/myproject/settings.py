@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'myapp',
-    'shop',
+    'main_app.apps.MainAppConfig',
+    'shop_app.apps.ShopAppConfig',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +58,9 @@ ROOT_URLCONF = 'myproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,7 +147,7 @@ LOGGING = {
         },
         'file': {
             'class': 'logging.FileHandler',
-            'filename': './logs/myapp.log',
+            'filename': './logs/main_app.log',
             'formatter': 'verbose',
         },
     },
@@ -154,7 +156,7 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
         },
-        'myapp': {
+        'main_app': {
             'handlers': ['console', 'file'],
             'level': 'INFO',
             'propagate': True,
