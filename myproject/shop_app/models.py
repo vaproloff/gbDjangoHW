@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Client(models.Model):
@@ -27,7 +28,7 @@ class Order(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product)
     total_amount = models.DecimalField(max_digits=8, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return (f'{self.client}. Total amount: {self.total_amount}.\n'

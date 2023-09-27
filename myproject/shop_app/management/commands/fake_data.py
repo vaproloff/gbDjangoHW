@@ -1,6 +1,8 @@
 import random
 
 from django.core.management.base import BaseCommand
+from django.utils import timezone
+
 from shop_app.models import Client, Product, Order
 
 
@@ -36,9 +38,14 @@ class Command(BaseCommand):
 
         for i in range(1, orders_qty + 1):
             order = Order(client=random.choice(clients),
-                          total_amount=random.uniform(10.0, 300.0))
+                          total_amount=0,
+                          created_at=(timezone.now() - timezone.timedelta(days=random.randint(1, 100))))
             order.save()
-            for _ in range(random.randint(1, 3)):
+            total_sum = 0
+            for _ in range(random.randint(1, 4)):
                 product = random.choice(products)
+                total_sum += product.price
                 order.products.add(product)
                 order.save()
+            order.total_amount = total_sum
+            order.save()
