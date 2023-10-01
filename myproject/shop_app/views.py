@@ -1,8 +1,21 @@
+from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 
-from shop_app.models import Client, Product, Order
+from .models import Client, Product, Order
+from .forms import ProductForm
+
+
+class ShopView(TemplateView):
+    template_name = 'shop_app/shop.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['orders'] = Order.objects.all().order_by('-id')[:5]
+        context['products'] = Product.objects.all().order_by('-id')[:5]
+        context['clients'] = Client.objects.all().order_by('-id')[:5]
+        return context
 
 
 class OrderView(TemplateView):
@@ -52,3 +65,15 @@ class ProductView(TemplateView):
         product = get_object_or_404(Product, pk=self.kwargs['product_id'])
         context['product'] = product
         return context
+
+
+def update_product(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    if request.method == 'POST':
+        product = ProductForm(request.POST, request.FILES, instance=product)
+        if product.is_valid():
+            product.save()
+            return redirect(reverse('product_by_id', kwargs={'product_id': product_id}))
+    else:
+        form = ProductForm(instance=product)
+        return render(request, 'shop_app/update_product.html', {'form': form, 'title': product.name})
