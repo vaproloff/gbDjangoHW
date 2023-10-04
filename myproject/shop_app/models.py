@@ -10,7 +10,7 @@ class Client(models.Model):
     registered_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'Client: {self.name}, {self.email}, {self.phone}'
+        return f'{self.name}'
 
 
 class Product(models.Model):
@@ -22,7 +22,7 @@ class Product(models.Model):
     image = models.ImageField(default=None)
 
     def __str__(self):
-        return f'Product: {self.name}. Price: {self.price}. Quantity: {self.quantity}'
+        return f'{self.name}'
 
 
 class Order(models.Model):
@@ -32,5 +32,5 @@ class Order(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return (f'{self.client}. Total amount: {self.total_amount}.\n'
+        return (f'Order #{self.pk}. Client: {self.client}. Total amount: {self.total_amount}.\n'
                 f'Products: {list(map(str, self.products.all()))}')
